@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TreasuryFlow.Domain.Transactions.Repositories;
+using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Infrastructure.Shared.Data;
-using TreasuryFlow.Infrastructure.Transactions.Repositories;
 
 namespace TreasuryFlow.Infrastructure;
 
@@ -18,10 +17,10 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<TreasuryFlowDbContext>(options =>
             options.UseSqlServer(connectionString));
 
+        services.AddScoped<ITreasuryFlowDbContext>(sp =>
+            sp.GetRequiredService<TreasuryFlowDbContext>());
+
+
         return services;
     }
-
-    public static IServiceCollection AddRepositories(this IServiceCollection services) =>
-        services
-            .AddScoped<ITransactionRepository, TransactionRepository>();
 }

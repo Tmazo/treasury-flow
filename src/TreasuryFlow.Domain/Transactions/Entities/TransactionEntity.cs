@@ -6,17 +6,15 @@ namespace TreasuryFlow.Domain.Transactions.Entities;
 
 public class TransactionEntity : BaseEntity
 {
-    public Guid UserId { get; private set; }
-    public decimal Amount { get; private set; }
-    public ETransactionType TransactionType { get; private set; }
+    public Guid UserId { get; set; }
+    public decimal Amount { get; set; }
+    public ETransactionType TransactionType { get; set; }
 
-    public TransactionEntity(
-        Guid userId,
-        decimal amount,
-        ETransactionType transactionType)
-    {
-        UserId = userId;
-        Amount = amount;
-        TransactionType = transactionType;
-    }
+    public TransactionCreatedEvent ToCreatedEvent() =>
+        new()
+        {
+            UserId = UserId,
+            TransactionType = TransactionType,
+            Amount = Amount
+        };
 }

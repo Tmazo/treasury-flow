@@ -1,8 +1,19 @@
-﻿using TreasuryFlow.Domain.Transactions.Enums;
+﻿using TreasuryFlow.Domain.Transactions.Entities;
+using TreasuryFlow.Domain.Transactions.Enums;
 
 namespace TreasuryFlow.Application.Transactions.Inputs;
 
 public record CreateTransactionInput(
-    Guid TransactionId,
+    Guid UserId,
     decimal Amount,
-    ETransactionType TransactionType);
+    ETransactionType TransactionType)
+{
+
+    public TransactionEntity ToEntity() =>
+        new()
+        {
+            UserId = UserId,
+            TransactionType = TransactionType,
+            Amount = Amount
+        };
+};

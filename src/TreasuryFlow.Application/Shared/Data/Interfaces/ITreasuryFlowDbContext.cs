@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TreasuryFlow.Domain.Transactions.Entities;
 
-namespace TreasuryFlow.Application.Shared.Interfaces;
+namespace TreasuryFlow.Application.Shared.Data.Interfaces;
 
 public interface ITreasuryFlowDbContext
 {

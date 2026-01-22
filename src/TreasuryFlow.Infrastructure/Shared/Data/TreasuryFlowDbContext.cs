@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TreasuryFlow.Application.Shared.Interfaces;
+using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Domain.Transactions.Entities;
 
 namespace TreasuryFlow.Infrastructure.Shared.Data;

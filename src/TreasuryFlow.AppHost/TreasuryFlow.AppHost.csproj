@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TreasuryFlow.Api\TreasuryFlow.Api.csproj" />
+    <ProjectReference Include="..\Workers\TreasuryFlow.Consumer\TreasuryFlow.Consumer.csproj" />
     <PackageReference Include="Aspire.Hosting.AppHost" Version="13.1.0" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.1.0" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.1.0" />

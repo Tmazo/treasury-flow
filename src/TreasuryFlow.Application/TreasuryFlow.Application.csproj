@@ -15,4 +15,8 @@
     <ProjectReference Include="..\TreasuryFlow.Domain\TreasuryFlow.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Transactions\Processors\Interfaces\" />
+  </ItemGroup>
+
 </Project>

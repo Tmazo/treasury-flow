@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
+using TreasuryFlow.Application.Transactions.Processors.Interfaces;
 using TreasuryFlow.Infrastructure.Shared.Data;
+using TreasuryFlow.Infrastructure.Transactions.Processors;
 
 namespace TreasuryFlow.Infrastructure;
 
@@ -33,4 +35,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddProcessors(this IServiceCollection services) =>
+        services.AddScoped<ITransactionCreatedProcessor, TransactionCreatedProcessor>();
 }

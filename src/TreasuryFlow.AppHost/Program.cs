@@ -29,4 +29,6 @@ builder.AddProject<Projects.TreasuryFlow_Api>("treasuryflow-api")
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
 
+builder.AddProject<Projects.TreasuryFlow_Consumer>("treasuryflow-consumer");
+
 builder.Build().Run();

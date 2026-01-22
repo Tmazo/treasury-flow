@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.2.1" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>360b9f23-ec9e-4eb9-85b5-991d63092f0c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TreasuryFlow.Api\TreasuryFlow.Api.csproj" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.2.1" />
+  </ItemGroup>
+
+</Project>

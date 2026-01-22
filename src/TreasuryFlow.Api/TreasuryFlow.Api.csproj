@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TreasuryFlow.Application\TreasuryFlow.Application.csproj" />
+    <ProjectReference Include="..\TreasuryFlow.Infrastructure\TreasuryFlow.Infrastructure.csproj" />
     <ProjectReference Include="..\TreasuryFlow.ServiceDefaults\TreasuryFlow.ServiceDefaults.csproj" />
   </ItemGroup>
 

@@ -14,8 +14,18 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("TreasuryFlowDb");
 
+        //services.AddDbContext<TreasuryFlowDbContext>(options =>
+        //    options.UseSqlServer(connectionString));
+
         services.AddDbContext<TreasuryFlowDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        {
+            options.UseSqlServer(
+                configuration.GetConnectionString("TreasuryFlowDb"),
+                sql =>
+                {
+                    sql.EnableRetryOnFailure();
+                });
+        });
 
         services.AddScoped<ITreasuryFlowDbContext>(sp =>
             sp.GetRequiredService<TreasuryFlowDbContext>());

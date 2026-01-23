@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Builder;
+using TreasuryFlow.Application;
 using TreasuryFlow.Consumer.Consumers;
 using TreasuryFlow.Infrastructure;
 using TreasuryFlow.Infrastructure.Shared.Communications;
@@ -12,6 +13,8 @@ public static class HostingExtensions
     {
         builder.AddServiceDefaults();
 
+        builder.Services.AddDatabase(builder.Configuration);
+        builder.Services.AddServices();
         builder.Services.AddProcessors();
 
         builder.Services.AddMassTransitDefaults(configure =>

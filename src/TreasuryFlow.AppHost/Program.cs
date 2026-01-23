@@ -25,10 +25,12 @@ var rabbitmq = builder.AddRabbitMQ("RabbitMq", userName: username, password: pas
 
 builder.AddProject<Projects.TreasuryFlow_Api>("treasuryflow-api")
     .WithReference(sql)
-    //.WaitFor(sql)
+    .WaitFor(sql)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
 
-builder.AddProject<Projects.TreasuryFlow_Consumer>("treasuryflow-consumer");
+builder.AddProject<Projects.TreasuryFlow_Consumer>("treasuryflow-consumer")
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq);
 
 builder.Build().Run();

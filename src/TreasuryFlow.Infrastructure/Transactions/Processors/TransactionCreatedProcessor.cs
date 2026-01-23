@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TreasuryFlow.Application.OwnerBalances.Services;
 using TreasuryFlow.Application.OwnerBalances.Services.Interfaces;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Application.Transactions.Processors.Interfaces;
-using TreasuryFlow.Domain.OwnerBalance.Entities;
 using TreasuryFlow.Domain.Transactions.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TreasuryFlow.Infrastructure.Transactions.Processors;
 
@@ -18,7 +15,7 @@ public class TransactionCreatedProcessor(
         Guid transactionId,
         CancellationToken cancellationToken)
     {
-        var transaction = await treasuryFlowDbContext.Transactions.FirstOrDefaultAsync(f => f.Id == transactionId, 
+        var transaction = await treasuryFlowDbContext.Transactions.FirstOrDefaultAsync(f => f.Id == transactionId,
             cancellationToken)
             ?? throw new InvalidOperationException($"Transaction with id {transactionId} not found.");
 

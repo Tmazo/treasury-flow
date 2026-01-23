@@ -28,4 +28,8 @@ app.MapControllers();
 //var context = services.GetRequiredService<TreasuryFlow.Infrastructure.Shared.Data.TreasuryFlowDbContext>();
 //await context.Database.MigrateAsync();
 
-app.Run();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+await app.RunAsync();

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.Transactions.Requests;
 using TreasuryFlow.Application.Transactions.Services.Interfaces;
 
 namespace TreasuryFlow.Api.Transactions;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 

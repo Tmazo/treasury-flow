@@ -17,8 +17,11 @@ public class TransactionEntity : BaseEntity
     public TransactionCreatedEvent ToCreatedEvent() =>
         new()
         {
+            Id = Id,
             OwnerId = OwnerId,
             Type = Type,
             Amount = Amount
         };
+
+    public DateOnly GetFormatDateCreated() => DateOnly.FromDateTime(CreatedAt.UtcDateTime);
 }

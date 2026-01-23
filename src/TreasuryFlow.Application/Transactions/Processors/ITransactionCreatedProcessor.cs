@@ -2,4 +2,8 @@
 
 public interface ITransactionCreatedProcessor
 {
+    Task DoAsync(
+        Guid ownerId,
+        Guid transactionId,
+        CancellationToken cancellationToken);
 }

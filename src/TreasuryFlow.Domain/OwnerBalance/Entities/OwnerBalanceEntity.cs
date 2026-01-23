@@ -10,7 +10,7 @@ public class OwnerBalanceEntity : BaseEntity
     public decimal OutputAmount { get; set; }
     public decimal DailyBalance => InputAmount - OutputAmount;
     public decimal TotalBalance { get; private set; }
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
 
     public OwnerEntity Owner { get; set; }
 

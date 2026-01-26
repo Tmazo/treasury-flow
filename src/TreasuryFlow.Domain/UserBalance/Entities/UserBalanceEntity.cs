@@ -14,7 +14,6 @@ public class UserBalanceEntity : BaseEntity
 
     public UserEntity User { get; set; }
 
-    public void ApplyDailyBalance(decimal previousTotalBalance) => //TODO: previousTotalBalance é o quanto ele tinha. Buscar por UserId e Date ordenado pelo mais recente e pegar o campo DailyBalance
+    public void ApplyDailyBalance(decimal previousTotalBalance) =>
         TotalBalance = previousTotalBalance + DailyBalance;
-
 }

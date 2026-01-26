@@ -4,9 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TreasuryFlow.Api.Auth.Requirements;
 using TreasuryFlow.Api.Auth.Requirements.Handlers;
+using TreasuryFlow.Api.UserBalances.Validators;
 using TreasuryFlow.Application;
 using TreasuryFlow.Infrastructure;
 using TreasuryFlow.Infrastructure.Shared.Communications;
+using FluentValidation;
 
 namespace TreasuryFlow.Api;
 
@@ -54,6 +56,8 @@ public static class HostingExtensions
         });
 
         builder.Services.AddSingleton<IAuthorizationHandler, RequireUserIdHandler>();
+
+        builder.Services.AddValidatorsFromAssemblyContaining<GetDailyBalanceRequestValidator>();
 
         return builder;
     }

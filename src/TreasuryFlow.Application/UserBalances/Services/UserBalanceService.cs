@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
+using TreasuryFlow.Application.UserBalances.Outputs;
 using TreasuryFlow.Application.UserBalances.Services.Interfaces;
 using TreasuryFlow.Domain.Transactions.Entities;
 using TreasuryFlow.Domain.Transactions.Enums;
@@ -64,5 +65,37 @@ namespace TreasuryFlow.Application.UserBalances.Services
 
             await treasuryFlowDbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<UserBalanceOutput>> GetUserBalancesByPeriodAsync(
+            DateOnly startDate,
+            DateOnly endDate,
+            Guid? userId = null)
+        {
+            var query = treasuryFlowDbContext.UserBalances
+                .AsNoTracking()
+                .Where(ub =>
+                    ub.Date >= startDate &&
+                    ub.Date <= endDate);
+
+            if (userId.HasValue)
+            {
+                query = query.Where(ub => ub.UserId == userId.Value);
+            }
+
+            return await query
+                .OrderBy(ub => ub.Date)
+                .Select(ub => new UserBalanceOutput
+                {
+                    UserId = ub.UserId,
+                    InputAmount = ub.InputAmount,
+                    OutputAmount = ub.OutputAmount,
+                    DailyBalance = ub.DailyBalance,
+                    TotalBalance = ub.TotalBalance,
+                    Date = ub.Date
+                })
+                .ToListAsync();
+        }
+
+
     }
 }

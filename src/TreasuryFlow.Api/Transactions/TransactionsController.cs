@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.Transactions.Requests;
 using TreasuryFlow.Application.Shared.Extensions;
@@ -10,7 +11,8 @@ namespace TreasuryFlow.Api.Transactions;
 [ApiController]
 [Route("api/[controller]")]
 
-public class TransactionsController(ITransactionService service) : ControllerBase
+public class TransactionsController(ITransactionService service,
+    IValidator<CreateTransactionRequest> validator) : ControllerBase
 {
     /// <summary>
     /// Cria uma nova transação financeira.
@@ -23,6 +25,12 @@ public class TransactionsController(ITransactionService service) : ControllerBas
         CancellationToken cancellationToken)
     {
         var userId = User.GetUserIdAsValidatedGuid();
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.ToDictionary());
+
         var result = await service.CreateAsync(
             request.ToInput(userId),
             cancellationToken);

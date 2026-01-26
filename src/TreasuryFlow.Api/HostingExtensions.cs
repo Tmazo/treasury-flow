@@ -53,11 +53,14 @@ public static class HostingExtensions
         {
             options.AddPolicy("RequireUserId", policy =>
                 policy.Requirements.Add(new RequireUserIdRequirement()));
+
+            options.AddPolicy("ManageUserBalance", policy =>
+                policy.Requirements.Add(new ManageUserBalanceRequirement()));
         });
 
         builder.Services.AddSingleton<IAuthorizationHandler, RequireUserIdHandler>();
 
-        builder.Services.AddValidatorsFromAssemblyContaining<GetDailyBalanceRequestValidator>();
+        builder.Services.AddValidatorsFromAssemblyContaining<GetUserBalanceByPeriodRequestValidator>();
 
         return builder;
     }

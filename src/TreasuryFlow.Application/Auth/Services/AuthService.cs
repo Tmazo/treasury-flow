@@ -8,6 +8,7 @@ using TreasuryFlow.Application.Auth.Services.Inputs;
 using TreasuryFlow.Application.Auth.Services.Interfaces;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Application.Shared.Helpers;
+using TreasuryFlow.Domain.Shared.Enums;
 using TreasuryFlow.Domain.User.Entities;
 
 namespace TreasuryFlow.Application.Auth.Services;
@@ -16,13 +17,19 @@ public class AuthService(ITreasuryFlowDbContext context, IConfiguration configur
 {
 
     public async Task Register(RegisterInput input)
-    {
+    {        
         var user = new UserEntity
         {
             Name = input.Name,
             Email = input.Email,
             PasswordHash = PasswordHasherHelper.Hash(input.Password)
         };
+
+        var hasAnyUser = await context.Users.AnyAsync();
+
+        user.Role = !hasAnyUser
+            ? EPermissionRole.Admin
+            : EPermissionRole.User;
 
         await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
@@ -44,7 +51,8 @@ public class AuthService(ITreasuryFlowDbContext context, IConfiguration configur
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Email)
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
         };
 
         var key = new SymmetricSecurityKey(

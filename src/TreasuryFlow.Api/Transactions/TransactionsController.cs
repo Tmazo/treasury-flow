@@ -20,13 +20,15 @@ public class TransactionsController(ITransactionService service,
     /// <param name="request">Dados necessários para criação da transação.</param>
     /// <returns>Dados da transação criada.</returns>
     [HttpPost]
-    public async Task<IActionResult> Create(
+    public async Task<IActionResult> CreateAsync(
         CreateTransactionRequest request,
         CancellationToken cancellationToken)
     {
         var userId = User.GetUserIdAsValidatedGuid();
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(
+            request,
+            cancellationToken);
 
         if (!validationResult.IsValid)
             return BadRequest(validationResult.ToDictionary());

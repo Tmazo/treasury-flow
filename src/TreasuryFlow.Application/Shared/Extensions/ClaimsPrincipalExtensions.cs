@@ -25,4 +25,7 @@ public static class ClaimsPrincipalExtensions
 
         return Guid.Parse(id);
     }
+
+    public static string GetUserRole(this ClaimsPrincipal user)
+        => user.FindFirstValue(ClaimTypes.Role)!;
 }

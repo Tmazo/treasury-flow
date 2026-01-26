@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{CA5D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasuryFlow.Consumer", "src\Workers\TreasuryFlow.Consumer\TreasuryFlow.Consumer.csproj", "{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{84AC7ADB-8149-4ED3-81FE-B62CECCF818D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasuryFlow.Application.Tests", "tests\UnitTests\TreasuryFlow.Application.Tests\TreasuryFlow.Application.Tests.csproj", "{3F7A3423-8269-452D-9394-625A916B2F56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,10 @@ Global
 		{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F7A3423-8269-452D-9394-625A916B2F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7A3423-8269-452D-9394-625A916B2F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7A3423-8269-452D-9394-625A916B2F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7A3423-8269-452D-9394-625A916B2F56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +83,8 @@ Global
 		{DED9D304-B7F4-401F-88DA-8849EA82309D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{CA5DCFFD-72BB-464B-A926-FAF39E5E3E49} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3} = {CA5DCFFD-72BB-464B-A926-FAF39E5E3E49}
+		{84AC7ADB-8149-4ED3-81FE-B62CECCF818D} = {A3E7065C-D1C6-4BD4-A938-10D8BF3ABBD9}
+		{3F7A3423-8269-452D-9394-625A916B2F56} = {84AC7ADB-8149-4ED3-81FE-B62CECCF818D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E46F992-1746-4A58-A9D8-8DA8F9C2085E}

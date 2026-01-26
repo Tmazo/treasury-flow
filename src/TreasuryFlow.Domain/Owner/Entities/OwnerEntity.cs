@@ -7,6 +7,8 @@ namespace TreasuryFlow.Domain.Owner.Entities;
 public class OwnerEntity : BaseEntity
 {
     public required string Name { get; set; }
+    public required string Email { get; set; }
+    public required string PasswordHash { get; set; }
     public IEnumerable<OwnerBalanceEntity>? OwnerBalances { get; set; }
     public IEnumerable<TransactionEntity>? Transactions { get; set; }
 }

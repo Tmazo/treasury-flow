@@ -21,7 +21,7 @@ public class TransactionService(ITreasuryFlowDbContext treasuryFlowDbContext, IE
         await treasuryFlowDbContext.SaveChangesAsync(cancellationToken);
 
         await eventPublisher.SendAsRawJsonAsync(
-            entity.ToCreatedEvent(),
+            entity.ToEvent(),
             cancellationToken);
 
         return new CreateTransactionResponse(entity.Id);

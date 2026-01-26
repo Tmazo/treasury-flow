@@ -14,7 +14,7 @@ public class TransactionEntity : BaseEntity
 
     public OwnerEntity Owner { get; set; }
 
-    public TransactionCreatedEvent ToCreatedEvent() =>
+    public TransactionCreatedEvent ToEvent() =>
         new()
         {
             Id = Id,

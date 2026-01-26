@@ -5,7 +5,7 @@ using TreasuryFlow.Application.Transactions.Services.Interfaces;
 
 namespace TreasuryFlow.Api.Transactions;
 
-[Authorize]
+[Authorize(Policy = "RequireUserId")]
 [ApiController]
 [Route("api/[controller]")]
 

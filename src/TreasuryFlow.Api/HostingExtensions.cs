@@ -1,6 +1,9 @@
 ﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TreasuryFlow.Api.Auth.Requirements;
+using TreasuryFlow.Api.Auth.Requirements.Handlers;
 using TreasuryFlow.Application;
 using TreasuryFlow.Infrastructure;
 using TreasuryFlow.Infrastructure.Shared.Communications;
@@ -44,7 +47,13 @@ public static class HostingExtensions
                 };
             });
 
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("RequireUserId", policy =>
+                policy.Requirements.Add(new RequireUserIdRequirement()));
+        });
+
+        builder.Services.AddSingleton<IAuthorizationHandler, RequireUserIdHandler>();
 
         return builder;
     }

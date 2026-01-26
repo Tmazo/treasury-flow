@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
-using TreasuryFlow.Domain.Owner.Entities;
-using TreasuryFlow.Domain.OwnerBalance.Entities;
 using TreasuryFlow.Domain.Transactions.Entities;
+using TreasuryFlow.Domain.User.Entities;
+using TreasuryFlow.Domain.UserBalance.Entities;
 
 namespace TreasuryFlow.Infrastructure.Shared.Data;
 
 public class TreasuryFlowDbContext : DbContext, ITreasuryFlowDbContext
 {
     public DbSet<TransactionEntity> Transactions { get; set; }
-    public DbSet<OwnerEntity> Owners { get; set; }
-    public DbSet<OwnerBalanceEntity> OwnerBalances { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<UserBalanceEntity> UserBalances { get; set; }
 
     public TreasuryFlowDbContext(DbContextOptions<TreasuryFlowDbContext> options)
         : base(options)

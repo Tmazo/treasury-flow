@@ -5,10 +5,10 @@ namespace TreasuryFlow.Api.Transactions.Requests;
 
 public class CreateTransactionRequest
 {
-    public Guid OwnerId { get; set; }
+    public Guid UserId { get; set; }
     public decimal Amount { get; set; }
     public ETransactionType TransactionType { get; set; }
 
     public CreateTransactionInput ToInput() =>
-        new(OwnerId, Amount, TransactionType);
+        new(UserId, Amount, TransactionType);
 }

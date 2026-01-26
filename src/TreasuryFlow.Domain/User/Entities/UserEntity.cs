@@ -1,14 +1,14 @@
-﻿using TreasuryFlow.Domain.OwnerBalance.Entities;
-using TreasuryFlow.Domain.Shared.Entities;
+﻿using TreasuryFlow.Domain.Shared.Entities;
 using TreasuryFlow.Domain.Transactions.Entities;
+using TreasuryFlow.Domain.UserBalance.Entities;
 
-namespace TreasuryFlow.Domain.Owner.Entities;
+namespace TreasuryFlow.Domain.User.Entities;
 
-public class OwnerEntity : BaseEntity
+public class UserEntity : BaseEntity
 {
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string PasswordHash { get; set; }
-    public IEnumerable<OwnerBalanceEntity>? OwnerBalances { get; set; }
+    public IEnumerable<UserBalanceEntity>? UserBalances { get; set; }
     public IEnumerable<TransactionEntity>? Transactions { get; set; }
 }

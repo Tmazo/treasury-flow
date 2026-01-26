@@ -1,24 +1,24 @@
-﻿using TreasuryFlow.Domain.Owner.Entities;
-using TreasuryFlow.Domain.Shared.Entities;
+﻿using TreasuryFlow.Domain.Shared.Entities;
 using TreasuryFlow.Domain.Transactions.Enums;
 using TreasuryFlow.Domain.Transactions.Events;
+using TreasuryFlow.Domain.User.Entities;
 
 namespace TreasuryFlow.Domain.Transactions.Entities;
 
 public class TransactionEntity : BaseEntity
 {
-    public Guid OwnerId { get; set; }
+    public Guid UserId { get; set; }
     public decimal Amount { get; set; }
     public ETransactionType Type { get; set; }
     public ETransactionStatus Status { get; set; } = ETransactionStatus.Pending;
 
-    public OwnerEntity Owner { get; set; }
+    public UserEntity User { get; set; }
 
     public TransactionCreatedEvent ToEvent() =>
         new()
         {
             Id = Id,
-            OwnerId = OwnerId,
+            UserId = UserId,
             Type = Type,
             Amount = Amount
         };

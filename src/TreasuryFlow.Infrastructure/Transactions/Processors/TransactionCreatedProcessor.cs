@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TreasuryFlow.Application.OwnerBalances.Services.Interfaces;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Application.Transactions.Processors.Interfaces;
+using TreasuryFlow.Application.UserBalances.Services.Interfaces;
 using TreasuryFlow.Domain.Transactions.Enums;
 
 namespace TreasuryFlow.Infrastructure.Transactions.Processors;
 
 public class TransactionCreatedProcessor(
     ITreasuryFlowDbContext treasuryFlowDbContext,
-    IOwnerBalanceService ownerBalanceService) : ITransactionCreatedProcessor
+    IUserBalanceService userBalanceService) : ITransactionCreatedProcessor
 {
     public async Task DoAsync(
-        Guid ownerId,
+        Guid userId,
         Guid transactionId,
         CancellationToken cancellationToken)
     {
@@ -22,14 +22,14 @@ public class TransactionCreatedProcessor(
         if (transaction.Status != ETransactionStatus.Pending)
             return;
 
-        var owner = await treasuryFlowDbContext.Owners.FirstOrDefaultAsync(f => f.Id == ownerId, cancellationToken)
-            ?? throw new InvalidOperationException($"Owner with id {ownerId} not found.");
+        var user = await treasuryFlowDbContext.Users.FirstOrDefaultAsync(f => f.Id == userId, cancellationToken)
+            ?? throw new InvalidOperationException($"User with id {userId} not found.");
 
         var transactionDate = transaction.GetFormatDateCreated();
 
-        var ownerBalance = await ownerBalanceService.GetOrCreateOwnerBalanceAsync(ownerId, transactionDate);
+        var userBalance = await userBalanceService.GetOrCreateUserBalanceAsync(userId, transactionDate);
 
-        await ownerBalanceService.UpdateOwnerBalanceAndTransactionAsync(ownerBalance, transaction);
+        await userBalanceService.UpdateUserBalanceAndTransactionAsync(userBalance, transaction);
 
     }
 }

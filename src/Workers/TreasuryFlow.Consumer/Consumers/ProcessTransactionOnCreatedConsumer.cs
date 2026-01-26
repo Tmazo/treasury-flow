@@ -15,10 +15,10 @@ namespace TreasuryFlow.Consumer.Consumers
                 "Started processing TransactionCreatedEvent. TransactionId: {TransactionId}",
                 context.Message.Id);
 
-            var ownerId = context.Message.OwnerId;
+            var userId = context.Message.UserId;
             var transactionId = context.Message.Id;
 
-            await transactionCreatedProcessor.DoAsync(ownerId: ownerId, transactionId: transactionId, context.CancellationToken);
+            await transactionCreatedProcessor.DoAsync(userId: userId, transactionId: transactionId, context.CancellationToken);
 
             _logger.LogInformation(
                 "Completed processing TransactionCreatedEvent. TransactionId: {TransactionId}",

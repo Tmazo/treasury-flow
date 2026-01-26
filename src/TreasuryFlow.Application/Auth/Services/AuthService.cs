@@ -8,7 +8,7 @@ using TreasuryFlow.Application.Auth.Services.Inputs;
 using TreasuryFlow.Application.Auth.Services.Interfaces;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Application.Shared.Helpers;
-using TreasuryFlow.Domain.Owner.Entities;
+using TreasuryFlow.Domain.User.Entities;
 
 namespace TreasuryFlow.Application.Auth.Services;
 
@@ -17,34 +17,34 @@ public class AuthService(ITreasuryFlowDbContext context, IConfiguration configur
 
     public async Task Register(RegisterInput input)
     {
-        var owner = new OwnerEntity
+        var user = new UserEntity
         {
             Name = input.Name,
             Email = input.Email,
             PasswordHash = PasswordHasherHelper.Hash(input.Password)
         };
 
-        await context.Owners.AddAsync(owner);
+        await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
     }
 
     public async Task<string> Login(LoginInput input)
     {
-        var owner = await context.Owners
+        var user = await context.Users
             .FirstOrDefaultAsync(x => x.Email == input.Email);
 
-        if (owner == null || !PasswordHasherHelper.Verify(input.Password, owner.PasswordHash))
+        if (user == null || !PasswordHasherHelper.Verify(input.Password, user.PasswordHash))
             throw new UnauthorizedAccessException();
 
-        return GenerateToken(owner);
+        return GenerateToken(user);
     }
 
-    private string GenerateToken(OwnerEntity owner)
+    private string GenerateToken(UserEntity user)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, owner.Id.ToString()),
-            new Claim(ClaimTypes.Name, owner.Email)
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Email)
         };
 
         var key = new SymmetricSecurityKey(

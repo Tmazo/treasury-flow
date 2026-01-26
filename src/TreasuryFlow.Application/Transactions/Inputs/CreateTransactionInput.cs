@@ -4,7 +4,7 @@ using TreasuryFlow.Domain.Transactions.Enums;
 namespace TreasuryFlow.Application.Transactions.Inputs;
 
 public record CreateTransactionInput(
-    Guid OwnerId,
+    Guid UserId,
     decimal Amount,
     ETransactionType Type)
 {
@@ -12,7 +12,7 @@ public record CreateTransactionInput(
     public TransactionEntity ToEntity() =>
         new()
         {
-            OwnerId = OwnerId,
+            UserId = UserId,
             Type = Type,
             Amount = Amount
         };

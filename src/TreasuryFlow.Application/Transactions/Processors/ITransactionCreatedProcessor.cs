@@ -3,7 +3,7 @@
 public interface ITransactionCreatedProcessor
 {
     Task DoAsync(
-        Guid ownerId,
+        Guid userId,
         Guid transactionId,
         CancellationToken cancellationToken);
 }

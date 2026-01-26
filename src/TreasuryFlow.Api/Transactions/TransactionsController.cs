@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.Transactions.Requests;
+using TreasuryFlow.Application.Shared.Extensions;
 using TreasuryFlow.Application.Transactions.Services.Interfaces;
 
 namespace TreasuryFlow.Api.Transactions;
@@ -21,8 +22,9 @@ public class TransactionsController(ITransactionService service) : ControllerBas
         CreateTransactionRequest request,
         CancellationToken cancellationToken)
     {
+        var userId = User.GetUserIdAsValidatedGuid();
         var result = await service.CreateAsync(
-            request.ToInput(),
+            request.ToInput(userId),
             cancellationToken);
 
         return Ok(result);

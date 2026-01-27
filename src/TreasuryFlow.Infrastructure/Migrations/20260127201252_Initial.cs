@@ -19,7 +19,7 @@ namespace TreasuryFlow.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
@@ -35,8 +35,8 @@ namespace TreasuryFlow.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },

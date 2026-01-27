@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using FluentValidation;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -8,7 +10,6 @@ using TreasuryFlow.Api.UserBalances.Validators;
 using TreasuryFlow.Application;
 using TreasuryFlow.Infrastructure;
 using TreasuryFlow.Infrastructure.Shared.Communications;
-using FluentValidation;
 
 namespace TreasuryFlow.Api;
 
@@ -32,8 +33,13 @@ public static class HostingExtensions
             });
         });
 
-        builder.Services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
+        builder.Services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new()
                 {
@@ -59,6 +65,7 @@ public static class HostingExtensions
         });
 
         builder.Services.AddSingleton<IAuthorizationHandler, RequireUserIdHandler>();
+        builder.Services.AddSingleton<IAuthorizationHandler, ManageUserBalanceHandler>();
 
         builder.Services.AddValidatorsFromAssemblyContaining<GetUserBalanceByPeriodRequestValidator>();
 

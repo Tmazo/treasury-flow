@@ -18,13 +18,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
@@ -32,9 +32,5 @@ using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<TreasuryFlow.Infrastructure.Shared.Data.TreasuryFlowDbContext>();
 await context.Database.MigrateAsync();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 
 await app.RunAsync();

@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.Auth.Requests;
 using TreasuryFlow.Application.Auth.Services.Interfaces;
 
 namespace TreasuryFlow.Api.Auth;
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(
     IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody]RegisterRequest request)
     {
         await authService.Register(request.ToInput());
         return Ok();

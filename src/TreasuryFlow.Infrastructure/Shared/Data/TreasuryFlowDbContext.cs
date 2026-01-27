@@ -27,5 +27,6 @@ public class TreasuryFlowDbContext : DbContext, ITreasuryFlowDbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TreasuryFlowDbContext).Assembly);
+        modelBuilder.UseStringEnums();
     }
 }

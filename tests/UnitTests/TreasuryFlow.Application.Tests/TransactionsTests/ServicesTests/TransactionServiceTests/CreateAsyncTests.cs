@@ -25,7 +25,7 @@ public class CreateAsyncTests : IClassFixture<TreasuryFlowDbContextFixture>
         _context = _fixture.DbContext;
     }
 
-        [Fact]
+    [Fact]
     public async Task CreateAsync_WhenUserDoesNotExist_ShouldThrowForbidden()
     {
         // Arrange

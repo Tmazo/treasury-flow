@@ -12,7 +12,7 @@ using TreasuryFlow.Infrastructure.Shared.Data;
 namespace TreasuryFlow.Infrastructure.Migrations
 {
     [DbContext(typeof(TreasuryFlowDbContext))]
-    [Migration("20260126195956_Initial")]
+    [Migration("20260127191101_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -76,6 +76,9 @@ namespace TreasuryFlow.Infrastructure.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");

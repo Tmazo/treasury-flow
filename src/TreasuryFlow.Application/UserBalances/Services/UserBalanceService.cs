@@ -17,6 +17,7 @@ public class UserBalanceService(
         DateOnly date)
     {
         var userBalance = await treasuryFlowDbContext.UserBalances
+            .AsTracking()
             .FirstOrDefaultAsync(f =>
             f.UserId == userId &&
             f.Date == date);

@@ -15,14 +15,19 @@ public class TransactionCreatedProcessor(
         Guid transactionId,
         CancellationToken cancellationToken)
     {
-        var transaction = await treasuryFlowDbContext.Transactions.FirstOrDefaultAsync(f => f.Id == transactionId,
+        var transaction = await treasuryFlowDbContext
+            .Transactions
+            .AsTracking()
+            .FirstOrDefaultAsync(f => f.Id == transactionId,
             cancellationToken)
             ?? throw new InvalidOperationException($"Transaction with id {transactionId} not found.");
 
         if (transaction.Status != ETransactionStatus.Pending)
             return;
 
-        var user = await treasuryFlowDbContext.Users.FirstOrDefaultAsync(f => f.Id == userId, cancellationToken)
+        var user = await treasuryFlowDbContext
+            .Users
+            .FirstOrDefaultAsync(f => f.Id == userId, cancellationToken)
             ?? throw new InvalidOperationException($"User with id {userId} not found.");
 
         var transactionDate = transaction.GetFormatDateCreated();

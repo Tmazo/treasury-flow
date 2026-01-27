@@ -22,7 +22,7 @@ public class UserBalancesController(
     /// <returns>Dados do balance diário.</returns>
     [HttpGet]
     public async Task<IActionResult> GetAsync(
-        GetUserBalanceByPeriodRequest request,
+        [FromQuery] GetUserBalanceByPeriodRequest request,
         CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(

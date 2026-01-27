@@ -20,4 +20,10 @@ public class TreasuryFlowDbContextFixture : IDisposable
     {
         DbContext.Dispose();
     }
+
+    public async Task ResetDatabaseAsync()
+    {
+        await DbContext.Database.EnsureDeletedAsync();
+        await DbContext.Database.EnsureCreatedAsync();
+    }
 }

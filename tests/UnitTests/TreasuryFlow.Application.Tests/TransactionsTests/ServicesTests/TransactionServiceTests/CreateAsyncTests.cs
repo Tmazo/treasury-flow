@@ -6,6 +6,7 @@ using TreasuryFlow.Application.Shared.Exceptions;
 using TreasuryFlow.Application.Tests.Fixtures;
 using TreasuryFlow.Application.Transactions.Inputs;
 using TreasuryFlow.Application.Transactions.Services;
+using TreasuryFlow.Application.UserBalances.Services;
 using TreasuryFlow.Domain.Transactions.Enums;
 using TreasuryFlow.Domain.User.Entities;
 using TreasuryFlow.Infrastructure.Shared.Data;
@@ -15,11 +16,16 @@ namespace TreasuryFlow.Application.Tests.TransactionsTests.ServicesTests.Transac
 public class CreateAsyncTests : IClassFixture<TreasuryFlowDbContextFixture>
 {
     private readonly TreasuryFlowDbContext _context;
+    readonly TreasuryFlowDbContextFixture _fixture;
 
-    public CreateAsyncTests(TreasuryFlowDbContextFixture fixture) => 
-        _context = fixture.DbContext;
+    public CreateAsyncTests(
+        TreasuryFlowDbContextFixture fixture)
+    {
+        _fixture = fixture;
+        _context = _fixture.DbContext;
+    }
 
-    [Fact]
+        [Fact]
     public async Task CreateAsync_WhenUserDoesNotExist_ShouldThrowForbidden()
     {
         // Arrange
@@ -37,6 +43,9 @@ public class CreateAsyncTests : IClassFixture<TreasuryFlowDbContextFixture>
         await act.Should()
             .ThrowAsync<ForbiddenAccessException>()
             .WithMessage("User is not allowed.");
+
+        await _fixture.ResetDatabaseAsync();
+
     }
 
     [Fact]
@@ -75,5 +84,7 @@ public class CreateAsyncTests : IClassFixture<TreasuryFlowDbContextFixture>
             .SendAsRawJsonAsync(
                 Arg.Any<object>(),
                 Arg.Any<CancellationToken>());
+
+        await _fixture.ResetDatabaseAsync();
     }
 }

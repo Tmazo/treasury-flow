@@ -90,11 +90,9 @@ public static class HostingExtensions
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         context.Response.ContentType = "application/json";
 
-                        return context.Response.WriteAsync("""
-            {
-                "error": "Usuário não autenticado ou token inválido."
-            }
-            """);
+                        return context.Response.WriteAsync("""                          
+                            {"error": "User not authenticated or invalid token."}                            
+                            """);
                     },
 
                     OnForbidden = context =>
@@ -102,11 +100,9 @@ public static class HostingExtensions
                         context.Response.StatusCode = StatusCodes.Status403Forbidden;
                         context.Response.ContentType = "application/json";
 
-                        return context.Response.WriteAsync("""
-            {
-                "error": "Usuário não tem permissão para executar essa operação."
-            }
-            """);
+                        return context.Response.WriteAsync("""                            
+                            {"error": "The user does not have permission to perform this operation."}                            
+                            """);
                     }
                 };
             });

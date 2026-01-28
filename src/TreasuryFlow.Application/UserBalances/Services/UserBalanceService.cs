@@ -97,36 +97,41 @@ public class UserBalanceService(
         GetUserBalancesByPeriodInput input,
         CancellationToken cancellationToken)
     {
-        var data = await treasuryFlowDbContext.UserBalances
-            .AsNoTracking()
-            .Where(ub =>
-                ub.Date >= input.InitialPeriod &&
-                ub.Date <= input.FinalPeriod)
-            .ToListAsync(cancellationToken);
+        var groupedData = await treasuryFlowDbContext.UserBalances
+           .AsNoTracking()
+           .Where(ub =>
+               ub.Date >= input.InitialPeriod &&
+               ub.Date <= input.FinalPeriod)
+           .GroupBy(ub => new { ub.Date, ub.UserId })
+           .Select(g => new
+           {
+               g.Key.Date,
+               g.Key.UserId,
+               InputAmount = g.Sum(x => x.InputAmount),
+               OutputAmount = g.Sum(x => x.OutputAmount),
+               DailyBalance = g.Sum(x => x.InputAmount - x.OutputAmount),
+               TotalBalance = g.Sum(x => x.TotalBalance)
+           })
+           .OrderBy(x => x.Date)
+           .ToListAsync(cancellationToken);
 
-        var result = data
-            .GroupBy(g => g.Date)
-            .OrderBy(g => g.Key.DayNumber)
+        var result = groupedData
+            .GroupBy(x => x.Date)
             .Select(dateGroup => new GetUserBalancesByPeriodOutput
             {
                 Date = dateGroup.Key,
 
-                UserBalances = dateGroup
-                    .GroupBy(ub => ub.UserId)
-                    .Select(userGroup => new GetUserBalancesByPeriodDto
-                    {
-                        UserId = userGroup.Key,
-                        Date = dateGroup.Key,
-                        InputAmount = userGroup.Sum(x => x.InputAmount),
-                        OutputAmount = userGroup.Sum(x => x.OutputAmount),
-                        DailyBalance = userGroup.Sum(x => x.DailyBalance),
-                        TotalBalance = userGroup.Sum(x => x.TotalBalance)
-                    })
-                    .ToList(),
+                UserBalances = dateGroup.Select(x => new GetUserBalancesByPeriodDto
+                {
+                    UserId = x.UserId,
+                    Date = x.Date,
+                    InputAmount = x.InputAmount,
+                    OutputAmount = x.OutputAmount,
+                    DailyBalance = x.DailyBalance,
+                    TotalBalance = x.TotalBalance
+                }).ToList(),
 
-                DateTotalBalance = dateGroup
-                    .GroupBy(ub => ub.UserId)
-                    .Sum(g => g.Sum(x => x.TotalBalance))
+                DateTotalBalance = dateGroup.Sum(x => x.TotalBalance)
             })
             .ToList();
 
@@ -135,11 +140,9 @@ public class UserBalanceService(
 
     private static TimeSpan ResolveTtl(GetUserBalancesByPeriodInput input)
     {
-        // dia atual muda o tempo todo
         if (input.FinalPeriod == DateOnly.FromDateTime(DateTime.UtcNow))
             return TimeSpan.FromSeconds(30);
 
-        // dias passados são praticamente imutáveis
         return TimeSpan.FromMinutes(10);
     }
 }

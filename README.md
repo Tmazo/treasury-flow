@@ -71,36 +71,28 @@ Itens já mapeados e outras sugestões para evolução:
 - Adicionar pipelines CI/CD com GitHub Actions e verificação de análise estática (ex.: SonarQube).
 
 ## Diagrama da arquitetura
+
 ```mermaid
 flowchart LR
-  %% Core components
+  subgraph Infra
+    DB[(SQL Server)]
+    RMQ[(RabbitMQ)]
+  end
+
   API["TreasuryFlow.Api\n(ASP.NET Core)"]
-  CONSUMER["TreasuryFlow.Consumer\n(Worker MassTransit)"]
-  APPHOST["TreasuryFlow.AppHost\n(Aspire)"]
-  DB[(SQL Server)]
-  RMQ[(RabbitMQ)]
-  Redis["Redis Cache (optional)"]
+  Consumer["TreasuryFlow.Consumer\n(Worker MassTransit)"]
+  App["TreasuryFlow.AppHost\n(Aspire)"]
 
-  %% Relationships
-  API -->|Reads/Writes| DB
-  API -->|Publishes events| RMQ
-  API -->|HTTP / Local orchestration| APPHOST
-  RMQ -->|Delivers events| CONSUMER
-  CONSUMER -->|Updates| DB
-  APPHOST -->|Provisioning / Dev orchestration| DB
-  APPHOST -->|Provisioning / Dev orchestration| RMQ
-  API -->|Reads (cache)| Redis
-  CONSUMER -->|Reads/Writes (cache)| Redis
+  API --> DB
+  API --> RMQ
+  API -->|HTTP| App
+  RMQ --> Consumer
+  Consumer --> DB
+  App --> DB
+  App --> RMQ
 
-  %% Visual styles
-  style API fill:#fff7e6,stroke:#b97300,stroke-width:1px
-  style CONSUMER fill:#e8f4ff,stroke:#2a6fb6,stroke-width:1px
-  style APPHOST fill:#f3f3ff,stroke:#6b68d9,stroke-width:1px
-  style DB fill:#e8fff0,stroke:#1f8f3a,stroke-width:1px
-  style RMQ fill:#fff0f0,stroke:#c23030,stroke-width:1px
-  style Redis fill:#f5f0ff,stroke:#7a52d6,stroke-width:1px
-
-  classDef infra stroke:#999,stroke-width:1px;
+  classDef infra fill:#f9f,stroke:#333,stroke-width:1px;
+  class Infra infra;
 ```
 
 Explicação da arquitetura

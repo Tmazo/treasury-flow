@@ -79,7 +79,7 @@ flowchart LR
   APPHOST["TreasuryFlow.AppHost\n(Aspire)"]
   DB[(SQL Server)]
   RMQ[(RabbitMQ)]
-  Redis[(Redis Cache) (optional)]
+  Redis["Redis Cache (optional)"]
 
   %% Relationships
   API -->|Reads/Writes| DB
@@ -98,7 +98,7 @@ flowchart LR
   style APPHOST fill:#f3f3ff,stroke:#6b68d9,stroke-width:1px
   style DB fill:#e8fff0,stroke:#1f8f3a,stroke-width:1px
   style RMQ fill:#fff0f0,stroke:#c23030,stroke-width:1px
-  style Redis fill:#f5f0ff,stroke:#7a52d6,stroke-width:1px,stroke-dasharray: 5 5
+  style Redis fill:#f5f0ff,stroke:#7a52d6,stroke-width:1px
 
   classDef infra stroke:#999,stroke-width:1px;
 ```

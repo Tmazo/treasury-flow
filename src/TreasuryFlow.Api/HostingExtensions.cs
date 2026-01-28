@@ -48,7 +48,7 @@ public static class HostingExtensions
             });
         });
 
-
+        builder.Services.AddInfrastructureServices();
         builder.Services.AddServices();
         builder.Services.AddDatabase(builder.Configuration);
 
@@ -79,6 +79,35 @@ public static class HostingExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
                     )
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        return context.Response.WriteAsync("""
+            {
+                "error": "Usuário não autenticado ou token inválido."
+            }
+            """);
+                    },
+
+                    OnForbidden = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.ContentType = "application/json";
+
+                        return context.Response.WriteAsync("""
+            {
+                "error": "Usuário não tem permissão para executar essa operação."
+            }
+            """);
+                    }
                 };
             });
 

@@ -16,6 +16,7 @@ public static class HostingExtensions
         builder.Services.AddDatabase(builder.Configuration);
         builder.Services.AddServices();
         builder.Services.AddProcessors();
+        builder.Services.AddInfrastructureServices();
 
         builder.Services.AddMassTransitDefaults(configure =>
         {

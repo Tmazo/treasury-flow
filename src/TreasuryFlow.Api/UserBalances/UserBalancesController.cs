@@ -32,7 +32,7 @@ public class UserBalancesController(
         if (!validationResult.IsValid)
             return BadRequest(validationResult.ToDictionary());
 
-        var result = userBalanceService.GetUserBalancesByPeriodAsync(
+        var result = await userBalanceService.GetUserBalancesByPeriodAsync(
             request.ToInput(),
             cancellationToken);
 

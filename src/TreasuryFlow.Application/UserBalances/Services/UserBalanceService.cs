@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TreasuryFlow.Application.Shared.Caching.Interfaces;
 using TreasuryFlow.Application.Shared.Data.Interfaces;
 using TreasuryFlow.Application.UserBalances.Inputs;
 using TreasuryFlow.Application.UserBalances.Outputs;
@@ -10,7 +11,8 @@ using TreasuryFlow.Domain.UserBalance.Entities;
 namespace TreasuryFlow.Application.UserBalances.Services;
 
 public class UserBalanceService(
-    ITreasuryFlowDbContext treasuryFlowDbContext) : IUserBalanceService
+    ITreasuryFlowDbContext treasuryFlowDbContext,
+    ICacheService cache) : IUserBalanceService
 {
     public async Task<UserBalanceEntity> GetOrCreateUserBalanceAsync(
         Guid userId,
@@ -72,31 +74,61 @@ public class UserBalanceService(
         GetUserBalancesByPeriodInput input,
         CancellationToken cancellationToken)
     {
-        var query = treasuryFlowDbContext.UserBalances
+        var cacheKey = $"user-balances:{input.InitialPeriod}:{input.FinalPeriod}";
+
+        var cached = await cache.GetAsync<IEnumerable<GetUserBalancesByPeriodOutput>>(
+            cacheKey,
+            cancellationToken);
+
+        if (cached is not null)
+            return cached;
+
+        var data = await treasuryFlowDbContext.UserBalances
             .AsNoTracking()
             .Where(ub =>
                 ub.Date >= input.InitialPeriod &&
-                ub.Date <= input.FinalPeriod);
-
-        var result = await query
-            .GroupBy(gb => gb.Date)
-            .OrderBy(o => o.Key)
-            .Select(s => new GetUserBalancesByPeriodOutput
-            {
-                Date = s.Key,
-                DateTotalBalance = s.Sum(x => x.TotalBalance),
-                UserBalances = s.Select(x => new GetUserBalancesByPeriodDto
-                {
-                    UserId = x.UserId,
-                    InputAmount = x.InputAmount,
-                    OutputAmount = x.OutputAmount,
-                    DailyBalance = x.DailyBalance,
-                    TotalBalance = x.TotalBalance,
-                    Date = x.Date
-                })
-            })
+                ub.Date <= input.FinalPeriod)
             .ToListAsync(cancellationToken);
 
+        var result = data
+            .GroupBy(g => g.Date)
+            .OrderBy(g => g.Key.DayNumber)
+            .Select(dateGroup => new GetUserBalancesByPeriodOutput
+            {
+                Date = dateGroup.Key,
+
+                UserBalances = dateGroup
+                    .GroupBy(ub => ub.UserId)
+                    .Select(userGroup => new GetUserBalancesByPeriodDto
+                    {
+                        UserId = userGroup.Key,
+                        Date = dateGroup.Key,
+                        InputAmount = userGroup.Sum(x => x.InputAmount),
+                        OutputAmount = userGroup.Sum(x => x.OutputAmount),
+                        DailyBalance = userGroup.Sum(x => x.DailyBalance),
+                        TotalBalance = userGroup.Sum(x => x.TotalBalance)
+                    })
+                    .ToList(),
+
+                DateTotalBalance = dateGroup
+                    .GroupBy(ub => ub.UserId)
+                    .Sum(g => g.Sum(x => x.TotalBalance))
+            })
+            .ToList();
+
+        var ttl = ResolveTtl(input);
+        await cache.SetAsync(cacheKey, result, ttl, cancellationToken);
+
         return result;
+    }
+
+    private static TimeSpan ResolveTtl(GetUserBalancesByPeriodInput input)
+    {
+        // dia atual muda o tempo todo
+        if (input.FinalPeriod == DateOnly.FromDateTime(DateTime.UtcNow))
+            return TimeSpan.FromSeconds(30);
+
+        // dias passados são praticamente imutáveis
+        return TimeSpan.FromMinutes(10);
     }
 }

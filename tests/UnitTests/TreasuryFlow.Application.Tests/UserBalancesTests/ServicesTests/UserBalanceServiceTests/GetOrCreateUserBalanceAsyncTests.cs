@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
+using TreasuryFlow.Application.Shared.Caching.Interfaces;
 using TreasuryFlow.Application.Tests.Fixtures;
 using TreasuryFlow.Application.UserBalances.Services;
 using TreasuryFlow.Domain.UserBalance.Entities;
@@ -12,13 +14,15 @@ public class GetOrCreateUserBalanceAsyncTests : IClassFixture<TreasuryFlowDbCont
     readonly TreasuryFlowDbContext _context;
     readonly TreasuryFlowDbContextFixture _fixture;
     readonly UserBalanceService _service;
+    readonly ICacheService _cacheService;
 
     public GetOrCreateUserBalanceAsyncTests(
         TreasuryFlowDbContextFixture fixture)
     {
         _fixture = fixture;
         _context = _fixture.DbContext;
-        _service = new UserBalanceService(_context);
+        _cacheService = Substitute.For<ICacheService>();
+        _service = new UserBalanceService(_context, _cacheService);
     }
 
 

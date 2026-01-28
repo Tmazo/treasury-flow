@@ -83,6 +83,20 @@ public class UserBalanceService(
         if (cached is not null)
             return cached;
 
+        var result = await GetCalculatedResult(
+            input,
+            cancellationToken);
+
+        var ttl = ResolveTtl(input);
+        await cache.SetAsync(cacheKey, result, ttl, cancellationToken);
+
+        return result;
+    }
+
+    private async Task<List<GetUserBalancesByPeriodOutput>> GetCalculatedResult(
+        GetUserBalancesByPeriodInput input,
+        CancellationToken cancellationToken)
+    {
         var data = await treasuryFlowDbContext.UserBalances
             .AsNoTracking()
             .Where(ub =>
@@ -115,9 +129,6 @@ public class UserBalanceService(
                     .Sum(g => g.Sum(x => x.TotalBalance))
             })
             .ToList();
-
-        var ttl = ResolveTtl(input);
-        await cache.SetAsync(cacheKey, result, ttl, cancellationToken);
 
         return result;
     }

@@ -29,7 +29,7 @@ public static class HostingExtensions
                 Scheme = "bearer",
                 BearerFormat = "JWT",
                 In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                Description = "Informe o token JWT no formato: Bearer {seu_token}"
+                Description = "Enter the JWT token in the format: Bearer {your_token}"
             });
 
             options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement

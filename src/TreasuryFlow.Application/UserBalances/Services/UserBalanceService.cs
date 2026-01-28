@@ -43,28 +43,19 @@ public class UserBalanceService(
         UserBalanceEntity userBalance,
         TransactionEntity transaction)
     {
-        var lastUserBalance = await treasuryFlowDbContext.UserBalances
-                .Where(f => f.UserId == userBalance.UserId)
-                .OrderByDescending(f => f.Date)
-                .Select(f => new { f.TotalBalance })
-                .FirstOrDefaultAsync();
-
-        var previousTotalBalance = lastUserBalance?.TotalBalance ?? 0m;
-        var date = DateOnly.FromDateTime(transaction.CreatedAt.UtcDateTime);
-
         switch (transaction.Type)
         {
             case ETransactionType.Input:
                 userBalance.InputAmount += transaction.Amount;
                 break;
             case ETransactionType.Output:
-                userBalance.OutputAmount -= transaction.Amount;
+                userBalance.OutputAmount += transaction.Amount;
                 break;
             default:
                 throw new NotImplementedException($"Transaction type {transaction.Type} not implemented.");
-        }
+        };
 
-        userBalance.ApplyDailyBalance(previousTotalBalance);
+        userBalance.RecalculateTotalBalance();
         transaction.Status = ETransactionStatus.Processed;
 
         await treasuryFlowDbContext.SaveChangesAsync();
@@ -83,7 +74,7 @@ public class UserBalanceService(
         if (cached is not null)
             return cached;
 
-        var result = await GetCalculatedResult(
+        var result = await GetCalculatedResultAsync(
             input,
             cancellationToken);
 
@@ -93,7 +84,7 @@ public class UserBalanceService(
         return result;
     }
 
-    private async Task<List<GetUserBalancesByPeriodOutput>> GetCalculatedResult(
+    private async Task<List<GetUserBalancesByPeriodOutput>> GetCalculatedResultAsync(
         GetUserBalancesByPeriodInput input,
         CancellationToken cancellationToken)
     {
@@ -109,7 +100,6 @@ public class UserBalanceService(
                g.Key.UserId,
                InputAmount = g.Sum(x => x.InputAmount),
                OutputAmount = g.Sum(x => x.OutputAmount),
-               DailyBalance = g.Sum(x => x.InputAmount - x.OutputAmount),
                TotalBalance = g.Sum(x => x.TotalBalance)
            })
            .OrderBy(x => x.Date)
@@ -127,7 +117,6 @@ public class UserBalanceService(
                     Date = x.Date,
                     InputAmount = x.InputAmount,
                     OutputAmount = x.OutputAmount,
-                    DailyBalance = x.DailyBalance,
                     TotalBalance = x.TotalBalance
                 }).ToList(),
 

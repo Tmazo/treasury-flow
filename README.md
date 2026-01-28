@@ -95,19 +95,9 @@ flowchart LR
   class Infra infra;
 ```
 
-> Disclaimer: Este README é um resumo gerado automaticamente e pode precisar de ajustes conforme o ambiente e as credenciais locais. Verifique as configurações de connection strings e secrets antes de executar em sua máquina.
-
 ## Busca do balance do dia
 
 - A busca do balance do dia foi mantida com agregação por `GroupBy` e projeção direta para DTOs. Essa abordagem produz queries indexáveis e sem estado.
 
 
 ---
-
-Se quiser, eu posso:
-
-- Adicionar um `docker-compose` pronto para rodar SQL + RabbitMQ + app.
-- Criar um `aspire` script de exemplo com parâmetros específicos.
-- Traduzir o README para inglês.
-
-Feito: README criado com documentação inicial e roadmap.

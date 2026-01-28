@@ -71,33 +71,54 @@ Itens já mapeados e outras sugestões para evolução:
 - Adicionar pipelines CI/CD com GitHub Actions e verificação de análise estática (ex.: SonarQube).
 
 ## Diagrama da arquitetura
-
 ```mermaid
 flowchart LR
-  subgraph Infra
-    DB[(SQL Server)]
-    RMQ[(RabbitMQ)]
-  end
-
+  %% Core components
   API["TreasuryFlow.Api\n(ASP.NET Core)"]
-  Consumer["TreasuryFlow.Consumer\n(Worker MassTransit)"]
-  App["TreasuryFlow.AppHost\n(Aspire)"]
+  CONSUMER["TreasuryFlow.Consumer\n(Worker MassTransit)"]
+  APPHOST["TreasuryFlow.AppHost\n(Aspire)"]
+  DB[(SQL Server)]
+  RMQ[(RabbitMQ)]
+  Redis[(Redis Cache) (optional)]
 
-  API --> DB
-  API --> RMQ
-  API -->|HTTP| App
-  RMQ --> Consumer
-  Consumer --> DB
-  App --> DB
-  App --> RMQ
+  %% Relationships
+  API -->|Reads/Writes| DB
+  API -->|Publishes events| RMQ
+  API -->|HTTP / Local orchestration| APPHOST
+  RMQ -->|Delivers events| CONSUMER
+  CONSUMER -->|Updates| DB
+  APPHOST -->|Provisioning / Dev orchestration| DB
+  APPHOST -->|Provisioning / Dev orchestration| RMQ
+  API -->|Reads (cache)| Redis
+  CONSUMER -->|Reads/Writes (cache)| Redis
 
-  classDef infra fill:#f9f,stroke:#333,stroke-width:1px;
-  class Infra infra;
+  %% Visual styles
+  style API fill:#fff7e6,stroke:#b97300,stroke-width:1px
+  style CONSUMER fill:#e8f4ff,stroke:#2a6fb6,stroke-width:1px
+  style APPHOST fill:#f3f3ff,stroke:#6b68d9,stroke-width:1px
+  style DB fill:#e8fff0,stroke:#1f8f3a,stroke-width:1px
+  style RMQ fill:#fff0f0,stroke:#c23030,stroke-width:1px
+  style Redis fill:#f5f0ff,stroke:#7a52d6,stroke-width:1px,stroke-dasharray: 5 5
+
+  classDef infra stroke:#999,stroke-width:1px;
 ```
+
+Explicação da arquitetura
+
+- `TreasuryFlow.Api`: API pública que expõe endpoints REST para criação de transações, consulta de saldos e autenticação. Valida entrada com `FluentValidation` e publica eventos via `MassTransit`/RabbitMQ quando necessário.
+- `TreasuryFlow.Consumer`: worker que consome eventos do RabbitMQ (via MassTransit) e realiza processamento assíncrono, por exemplo atualização de saldos agregados.
+- `TreasuryFlow.AppHost`: projeto usado com `aspire` para orquestrar recursos em execução local (SQL Server, RabbitMQ) durante desenvolvimento.
+- `SQL Server`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
+- `RabbitMQ`: barramento de mensagens para comunicação assíncrona entre API e workers.
+- `Redis` (opcional): cache para read-heavy endpoints e acelerar consultas agregadas.
+
+As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronteira HTTP, Consumer (azul) para processamento assíncrono, DB (verde) para persistência, Broker (vermelho) para mensageria e Redis (roxo tracejado) como componente opcional de cache.
 
 ## Busca do balance do dia
 
-- A busca do balance do dia foi mantida com agregação por `GroupBy` e projeção direta para DTOs. Essa abordagem produz queries indexáveis e sem estado.
+Os resultados de consultas são cacheados com uma política que prioriza dados recentes: TTL curto para o dia corrente (30 segundos) e TTL mais longo para períodos anteriores (10 minutos). Essa estratégia reduz carga sobre o banco em leituras repetidas sem sacrificar a frescura dos dados do dia atual.
+
+Recomendações de evolução: caso o volume de leitura ou a necessidade de baixa latência aumentem, considere introduzir um read model (CQRS) ou materialized views, adicionar cache distribuído (Redis) e adotar o padrão Outbox para garantir consistência entre gravações e publicação de eventos.
 
 
 ---

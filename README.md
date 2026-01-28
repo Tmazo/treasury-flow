@@ -110,7 +110,7 @@ As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronte
 
 Os resultados de consultas são cacheados com uma política que prioriza dados recentes: TTL curto para o dia corrente (30 segundos) e TTL mais longo para períodos anteriores (10 minutos). Essa estratégia reduz carga sobre o banco em leituras repetidas sem sacrificar a frescura dos dados do dia atual.
 
-Recomendações de evolução: caso o volume de leitura ou a necessidade de baixa latência aumentem, considere introduzir um read model (CQRS) ou materialized views, adicionar cache distribuído (Redis) e adotar o padrão Outbox para garantir consistência entre gravações e publicação de eventos.
+Recomendações de evolução: caso o volume de leitura ou a necessidade de baixa latência aumentem, considerar introduzir um read model (CQRS) ou materialized views, adicionar cache distribuído (Redis) e adotar o padrão Outbox para garantir consistência entre gravações e publicação de eventos.
 
 
 ---

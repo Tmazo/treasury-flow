@@ -79,9 +79,9 @@ flowchart LR
     RMQ[(RabbitMQ)]
   end
 
-  API["TreasuryFlow.Api\n(ASP.NET Core)"]
-  Consumer["TreasuryFlow.Consumer\n(Worker MassTransit)"]
-  App["TreasuryFlow.AppHost\n(Aspire)"]
+  API["TreasuryFlow.Api\(ASP.NET Core)"]
+  Consumer["TreasuryFlow.Consumer\(Worker MassTransit)"]
+  App["TreasuryFlow.AppHost\(Aspire)"]
 
   API --> DB
   API --> RMQ

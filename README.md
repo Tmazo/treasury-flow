@@ -86,7 +86,7 @@ Itens já mapeados e outras sugestões para evolução:
 - Implementar testes E2E integrados usando Aspire.
 - Separar o Auth para um microserviço dedicado com banco de dados próprio.
 - Implementar cache com Redis para consultas de leitura pesadas.
-- Adicionar testes unitários e de integração automáticos (CI).
+- Adicionar testes de integração automáticos.
 - Introduzir um read-model (CQRS) caso o volume de consultas por dia cresça muito.
 - Melhorar observabilidade: dashboards, alertas e tracing configurado para ambientes.
 - Harden security: validação de input mais rigorosa, proteção contra rate-limiting e configuração de CORS rígida.

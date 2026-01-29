@@ -8,7 +8,7 @@ using TreasuryFlow.Application.UserBalances.Services;
 using TreasuryFlow.Domain.UserBalance.Entities;
 using TreasuryFlow.Infrastructure.Shared.Data;
 
-namespace TreasuryFlow.Application.Tests.UserBalancesTests.ServicesTests.UserBalanceServiceTests;
+namespace TreasuryFlow.Application.Tests.UserBalancesTests.UserBalanceServiceTests;
 
 public class GetUserBalancesByPeriodAsyncTests
     : IClassFixture<TreasuryFlowDbContextFixture>

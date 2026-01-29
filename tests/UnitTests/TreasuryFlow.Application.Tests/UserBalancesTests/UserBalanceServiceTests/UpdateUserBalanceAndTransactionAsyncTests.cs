@@ -10,7 +10,7 @@ using TreasuryFlow.Domain.Transactions.Enums;
 using TreasuryFlow.Domain.UserBalance.Entities;
 using TreasuryFlow.Infrastructure.Shared.Data;
 
-namespace TreasuryFlow.Application.Tests.UserBalancesTests.ServicesTests.UserBalanceServiceTests;
+namespace TreasuryFlow.Application.Tests.UserBalancesTests.UserBalanceServiceTests;
 
 public class UpdateUserBalanceAndTransactionAsyncTests
     : IClassFixture<TreasuryFlowDbContextFixture>

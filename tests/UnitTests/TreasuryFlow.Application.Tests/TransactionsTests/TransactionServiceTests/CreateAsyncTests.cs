@@ -11,7 +11,7 @@ using TreasuryFlow.Domain.Transactions.Enums;
 using TreasuryFlow.Domain.User.Entities;
 using TreasuryFlow.Infrastructure.Shared.Data;
 
-namespace TreasuryFlow.Application.Tests.TransactionsTests.ServicesTests.TransactionServiceTests;
+namespace TreasuryFlow.Application.Tests.TransactionsTests.TransactionServiceTests;
 
 public class CreateAsyncTests : IClassFixture<TreasuryFlowDbContextFixture>
 {

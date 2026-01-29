@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasuryFlow.Application.Tests", "tests\UnitTests\TreasuryFlow.Application.Tests\TreasuryFlow.Application.Tests.csproj", "{3F7A3423-8269-452D-9394-625A916B2F56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasuryFlow.Api.Tests", "tests\UnitTests\TreasuryFlow.Api.Tests\TreasuryFlow.Api.Tests.csproj", "{40F4174F-60C0-476C-9D51-28B27C5D5135}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{3F7A3423-8269-452D-9394-625A916B2F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F7A3423-8269-452D-9394-625A916B2F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F7A3423-8269-452D-9394-625A916B2F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40F4174F-60C0-476C-9D51-28B27C5D5135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40F4174F-60C0-476C-9D51-28B27C5D5135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40F4174F-60C0-476C-9D51-28B27C5D5135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40F4174F-60C0-476C-9D51-28B27C5D5135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{55FCAAF6-040F-A4F5-3E16-CC2D20E003C3} = {CA5DCFFD-72BB-464B-A926-FAF39E5E3E49}
 		{84AC7ADB-8149-4ED3-81FE-B62CECCF818D} = {A3E7065C-D1C6-4BD4-A938-10D8BF3ABBD9}
 		{3F7A3423-8269-452D-9394-625A916B2F56} = {84AC7ADB-8149-4ED3-81FE-B62CECCF818D}
+		{40F4174F-60C0-476C-9D51-28B27C5D5135} = {84AC7ADB-8149-4ED3-81FE-B62CECCF818D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E46F992-1746-4A58-A9D8-8DA8F9C2085E}

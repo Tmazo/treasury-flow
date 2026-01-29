@@ -74,7 +74,7 @@ Veja os controladores em `src/TreasuryFlow.Api` (ex.: `TransactionsController`, 
 
 ## Observações de projeto e disclaimers
 
-- Mantive a agregação no banco usando `GroupBy` com projeção direta para DTOs. A query é stateless, indexável e suficiente para o volume esperado. Caso o volume cresça, a evolução natural seria introduzir um read model específico.
+- Para a consulta do balance diário mantive a agregação no banco usando `GroupBy` com projeção direta para DTOs. A query é stateless, indexável e suficiente para o volume esperado. Caso o volume cresça, a evolução natural sera introduzir um read model específico.
 - Este repositório é um ponto de partida; algumas decisões foram tomadas visando simplicidade e clareza para evolução futura.
 
 ## Melhorias / Roadmap sugerido

@@ -42,8 +42,6 @@ Pré-requisitos
 
    Esse comando irá orquestrar os recursos (PostgreSql, RabbitMQ) e iniciar os projetos configurados no `AppHost`.
 
-Observação: Você também pode executar projetos individualmente via `dotnet run` dentro das pastas de cada projeto para depuração local.
-
 Passo a passo do sistema (fluxo básico de uso)
 
 1. Registrar um usuário

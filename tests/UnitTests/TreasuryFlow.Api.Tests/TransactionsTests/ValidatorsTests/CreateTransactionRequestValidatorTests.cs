@@ -3,7 +3,7 @@ using TreasuryFlow.Api.Transactions.Requests;
 using TreasuryFlow.Api.Transactions.Validators;
 using TreasuryFlow.Domain.Transactions.Enums;
 
-namespace TreasuryFlow.Api.Tests.Transactions.Validators;
+namespace TreasuryFlow.Api.Tests.TransactionsTests.ValidatorsTests;
 
 public class CreateTransactionRequestValidatorTests
 {

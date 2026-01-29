@@ -74,25 +74,64 @@ Itens já mapeados e outras sugestões para evolução:
 
 ```mermaid
 flowchart LR
-  subgraph Infra
+  %% =========================
+  %% Infraestrutura
+  %% =========================
+  subgraph Infraestrutura
     DB[(SQL Server)]
     RMQ[(RabbitMQ)]
   end
 
-  API["TreasuryFlow.Api\(ASP.NET Core)"]
-  Consumer["TreasuryFlow.Consumer\(Worker MassTransit)"]
-  App["TreasuryFlow.AppHost\(Aspire)"]
+  %% =========================
+  %% API Pública
+  %% =========================
+  subgraph APIs
+    API["TreasuryFlow.Api<br/>(ASP.NET Core)"]
+  end
 
-  API --> DB
-  API --> RMQ
-  API -->|HTTP| App
-  RMQ --> Consumer
-  Consumer --> DB
-  App --> DB
-  App --> RMQ
+  %% =========================
+  %% Workers / Consumers
+  %% =========================
+  subgraph Workers
+    Consumer["TreasuryFlow.Consumer<br/>(Worker MassTransit)"]
+  end
 
-  classDef infra fill:#f9f,stroke:#333,stroke-width:1px;
-  class Infra infra;
+  %% =========================
+  %% Orquestração (Aspire)
+  %% =========================
+  subgraph Orquestracao
+    App["TreasuryFlow.AppHost<br/>(.NET Aspire)"]
+  end
+
+  %% =========================
+  %% Fluxos principais
+  %% =========================
+  API -->|Persistência| DB
+  API -->|Publica eventos| RMQ
+
+  RMQ -->|Consome eventos| Consumer
+  Consumer -->|Atualiza saldos / dados agregados| DB
+
+  %% =========================
+  %% Orquestração local
+  %% =========================
+  App -.->|Orquestra| API
+  App -.->|Executa| Consumer
+  App -.->|Provisiona| DB
+  App -.->|Provisiona| RMQ
+
+  %% =========================
+  %% Estilos (cores mais vivas e clean)
+  %% =========================
+  classDef api fill:#D6EBFF,stroke:#1565C0,stroke-width:2px,color:#0D47A1;
+  classDef worker fill:#DFF5E1,stroke:#2E7D32,stroke-width:2px,color:#1B5E20;
+  classDef infra fill:#FFE3EC,stroke:#AD1457,stroke-width:2px,color:#880E4F;
+  classDef orchestrator fill:#FFF2CC,stroke:#F57C00,stroke-width:2px,color:#E65100;
+
+  class API api;
+  class Consumer worker;
+  class DB,RMQ infra;
+  class App orchestrator;
 ```
 
 Explicação da arquitetura
@@ -102,7 +141,6 @@ Explicação da arquitetura
 - `TreasuryFlow.AppHost`: projeto usado com `aspire` para orquestrar recursos em execução local (SQL Server, RabbitMQ) durante desenvolvimento.
 - `SQL Server`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
 - `RabbitMQ`: barramento de mensagens para comunicação assíncrona entre API e workers.
-- `Redis` (opcional): cache para read-heavy endpoints e acelerar consultas agregadas.
 
 As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronteira HTTP, Consumer (azul) para processamento assíncrono, DB (verde) para persistência, Broker (vermelho) para mensageria e Redis (roxo tracejado) como componente opcional de cache.
 

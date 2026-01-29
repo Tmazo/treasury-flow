@@ -17,6 +17,14 @@ Arquitetura baseada em microserviços/split de responsabilidades com os seguinte
 
 Este repositório foi pensado para execução local distribuída usando o Aspire (https://aspire.dev/pt-br/get-started/install-cli/).
 
+Pré-requisitos
+
+- É necessário ter um runtime de contêiner disponível localmente para que o `aspire` possa provisionar os serviços (PostgreSql, RabbitMQ, etc.). Instale uma das opções abaixo:
+  - Rancher Desktop: https://rancherdesktop.io/
+  - Docker Desktop: https://docs.docker.com/desktop/setup/install/windows-install/
+
+  Depois de instalar, verifique se o serviço de contêiner está em execução antes de rodar `aspire run`.
+
 1. Instale a CLI do Aspire seguindo: https://aspire.dev/pt-br/get-started/install-cli/
 2. Faça clone do repositório:
 

@@ -7,7 +7,7 @@ Projeto exemplo para gerenciamento de transações e saldos de usuários.
 Arquitetura baseada em microserviços/split de responsabilidades com os seguintes componentes principais:
 
 - `src/TreasuryFlow.Api` - API HTTP pública.
-- `src/TreasuryFlow.AppHost` - Host de orquestração com `aspire` para execução local distribuída (SQL Server + RabbitMQ + serviços).
+- `src/TreasuryFlow.AppHost` - Host de orquestração com `aspire` para execução local distribuída (PostgreSql + RabbitMQ + serviços).
 - `src/Workers/TreasuryFlow.Consumer` - Worker (consumer) que processa eventos de transação (MassTransit/RabbitMQ).
 - `src/TreasuryFlow.Infrastructure` - Implementações de infra como EF Core, MassTransit, cache e comunicações.
 - `src/TreasuryFlow.Application` - Regras de negócio e serviços.
@@ -32,7 +32,7 @@ Este repositório foi pensado para execução local distribuída usando o Aspire
    aspire run
    ```
 
-   Esse comando irá orquestrar os recursos (SQL Server, RabbitMQ) e iniciar os projetos configurados no `AppHost`.
+   Esse comando irá orquestrar os recursos (PostgreSql, RabbitMQ) e iniciar os projetos configurados no `AppHost`.
 
 Observação: Você também pode executar projetos individualmente via `dotnet run` dentro das pastas de cada projeto para depuração local.
 
@@ -63,7 +63,7 @@ Dica: os validators e formatos das requests estão em `src/TreasuryFlow.Api` (ex
 - Clean Code / separação de camadas (Domain / Application / Infrastructure / Api).
 - Validação com `FluentValidation` (ex.: validators em `src/TreasuryFlow.Api`).
 - Mensageria com `MassTransit` + RabbitMQ (publisher/consumer).
-- Persistência com Entity Framework Core (SQL Server).
+- Persistência com Entity Framework Core (PostgreSql).
 - Logging e telemetria com OpenTelemetry (via `ServiceDefaults`).
 - Aspire `ServiceDefaults` e `AppHost` para orquestração local de recursos.
 - Background services para processamento assíncrono (Worker Service project).
@@ -101,7 +101,7 @@ flowchart LR
   %% Infraestrutura
   %% =========================
   subgraph Infraestrutura
-    DB[(SQL Server)]
+    DB[(PostgreSql)]
     RMQ[(RabbitMQ)]
   end
 
@@ -161,14 +161,14 @@ Explicação da arquitetura
 
 - `TreasuryFlow.Api`: API pública que expõe endpoints REST para criação de transações, consulta de saldos e autenticação. Valida entrada com `FluentValidation` e publica eventos via `MassTransit`/RabbitMQ quando necessário.
 - `TreasuryFlow.Consumer`: worker que consome eventos do RabbitMQ (via MassTransit) e realiza processamento assíncrono, por exemplo atualização de saldos agregados.
-- `TreasuryFlow.AppHost`: projeto usado com `aspire` para orquestrar recursos em execução local (SQL Server, RabbitMQ) durante desenvolvimento.
-- `SQL Server`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
+- `TreasuryFlow.AppHost`: projeto usado com `aspire` para orquestrar recursos em execução local (PostgreSql, RabbitMQ) durante desenvolvimento.
+- `PostgreSql`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
 - `RabbitMQ`: barramento de mensagens para comunicação assíncrona entre API e workers.
 
 As cores no diagrama destacam responsabilidades:
 - API (azul claro) representa a fronteira HTTP do sistema.
 - Consumer (verde claro) é responsável pelo processamento assíncrono em background.
-- Infraestrutura de persistência (SQL Server, em rosa claro) armazena os dados transacionais e agregados.
+- Infraestrutura de persistência (PostgreSql, em rosa claro) armazena os dados transacionais e agregados.
 - Infraestrutura de mensageria (RabbitMQ, em rosa claro) viabiliza a comunicação assíncrona baseada em eventos.
 - AppHost / Aspire (amarelo claro) atua na orquestração e provisão dos recursos durante o ambiente de desenvolvimento.
 

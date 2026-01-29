@@ -36,6 +36,28 @@ Este repositório foi pensado para execução local distribuída usando o Aspire
 
 Observação: Você também pode executar projetos individualmente via `dotnet run` dentro das pastas de cada projeto para depuração local.
 
+Passo a passo do sistema (fluxo básico de uso)
+
+1. Registrar um usuário
+   - Endpoint: `POST /api/auth/register`
+   - Body: `Name`, `Email`, `Password`.
+
+2. Autenticar (gerar token)
+   - Endpoint: `POST /api/auth/login`
+   - Body: `Email`, `Password`
+   - Resultado: objeto com `token` (use no header `Authorization: Bearer {token}`).
+
+3. Criar transação
+   - Endpoint: `POST /api/transactions`
+   - Requer header `Authorization: Bearer {token}`. (token deve conter user id).
+   - Body: payload de criação de transação (veja `src/TreasuryFlow.Api/Transactions/Requests/CreateTransactionRequest.cs`).
+
+4. Ver saldo diário (balance do dia)
+   - Endpoint: `GET /api/userbalances` com query `InitialPeriod` e `FinalPeriod` (formato `YYYY-MM-DD`).
+   - Requer role `Admin` para passar a policy `ManageUserBalance`.
+
+Dica: os validators e formatos das requests estão em `src/TreasuryFlow.Api` (ex.: validators em `Transactions/Validators` e `UserBalances/Validators`).
+
 ## Padrões e bibliotecas usadas
 
 - Clean Code / separação de camadas (Domain / Application / Infrastructure / Api).
@@ -69,6 +91,7 @@ Itens já mapeados e outras sugestões para evolução:
 - Melhorar observabilidade: dashboards, alertas e tracing configurado para ambientes.
 - Harden security: validação de input mais rigorosa, proteção contra rate-limiting e configuração de CORS rígida.
 - Adicionar pipelines CI/CD com GitHub Actions e verificação de análise estática (ex.: SonarQube).
+ - Criar endpoint para alterar a permissão de um usuário para `Admin` (controle de roles/privileges).
 
 ## Diagrama da arquitetura
 
@@ -142,7 +165,7 @@ Explicação da arquitetura
 - `SQL Server`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
 - `RabbitMQ`: barramento de mensagens para comunicação assíncrona entre API e workers.
 
-As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronteira HTTP, Consumer (azul) para processamento assíncrono, DB (verde) para persistência, Broker (vermelho) para mensageria e Redis (roxo tracejado) como componente opcional de cache.
+As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronteira HTTP, Consumer (azul) para processamento assíncrono, DB (verde) para persistência e Broker (vermelho) para mensageria.
 
 ## Busca do balance do dia
 

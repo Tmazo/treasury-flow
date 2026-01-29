@@ -9,7 +9,7 @@ using TreasuryFlow.Domain.Shared.Enums;
 using TreasuryFlow.Domain.User.Entities;
 using TreasuryFlow.Infrastructure.Shared.Data;
 
-namespace TreasuryFlow.Application.Tests.AuthTests.ServicesTests.AuthServiceTests;
+namespace TreasuryFlow.Application.Tests.AuthTests.AuthServiceTests;
 
 public class RegisterTests : IClassFixture<TreasuryFlowDbContextFixture>
 {

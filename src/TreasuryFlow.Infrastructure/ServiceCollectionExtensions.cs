@@ -16,15 +16,10 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        //var connectionString = configuration.GetConnectionString("TreasuryFlowDb");
-
-        //services.AddDbContext<TreasuryFlowDbContext>(options =>
-        //    options.UseSqlServer(connectionString));
-
         services.AddDbContext<TreasuryFlowDbContext>(options =>
         {
-            options.UseSqlServer(
-                configuration.GetConnectionString("TreasuryFlowDb"),
+            options.UseNpgsql(
+                configuration.GetConnectionString("TreasuryFlowSql"),
                 sql =>
                 {
                     sql.EnableRetryOnFailure();

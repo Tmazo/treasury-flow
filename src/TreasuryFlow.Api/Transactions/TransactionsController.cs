@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.Transactions.Requests;
 using TreasuryFlow.Application.Shared.Extensions;
 using TreasuryFlow.Application.Transactions.Services.Interfaces;
+using Asp.Versioning;
 
 namespace TreasuryFlow.Api.Transactions;
 
 [Authorize(Policy = "RequireUserId")]
-[ApiController]
+[ApiVersion("1.0")]
 [Route("api/[controller]")]
 
 public class TransactionsController(ITransactionService service,

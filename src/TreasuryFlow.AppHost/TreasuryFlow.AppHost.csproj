@@ -9,9 +9,9 @@
 	<ItemGroup>
     <ProjectReference Include="..\TreasuryFlow.Api\TreasuryFlow.Api.csproj" />
     <ProjectReference Include="..\Workers\TreasuryFlow.Consumer\TreasuryFlow.Consumer.csproj" />
-    <PackageReference Include="Aspire.Hosting.AppHost"/>
-    <PackageReference Include="Aspire.Hosting.RabbitMQ"/>
-    <PackageReference Include="Aspire.Hosting.SqlServer"/>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" />
   </ItemGroup>
 
 </Project>

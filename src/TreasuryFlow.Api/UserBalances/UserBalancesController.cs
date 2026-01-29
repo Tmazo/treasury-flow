@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Asp.Versioning;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TreasuryFlow.Api.UserBalances.Requests;
@@ -9,6 +10,7 @@ namespace TreasuryFlow.Api.UserBalances;
 [Authorize(Policy = "RequireUserId")]
 [Authorize(Policy = "ManageUserBalance")]
 [ApiController]
+[ApiVersion("1.0")]
 [Route("api/[controller]")]
 public class UserBalancesController(
     IUserBalanceService userBalanceService,

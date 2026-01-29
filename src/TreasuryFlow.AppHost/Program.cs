@@ -1,26 +1,25 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var username = builder.AddParameter("username", value: "admin", secret: true);
-var password = builder.AddParameter("password", value: "541981", secret: true);
+var password = builder.AddParameter("password", value: "123456", secret: true);
 
-var sqlPass = ResourceBuilder.Create(new ParameterResource("sqlpass", x => "1q2w3e4r@#$", true), builder);
+var postgres = builder.AddPostgres("treasuryflow", userName: username, password: password, port: 5432);
 
-var sql = builder.AddSqlServer("sqlserver", password: sqlPass, port: 57084)
-    .WithDataVolume("mssql")
-    .AddDatabase("TreasuryFlowDb");
+var treasuryFlowSql = postgres.AddDatabase("TreasuryFlowSql", databaseName: "treasury-flow");
+
 
 var rabbitmq = builder.AddRabbitMQ("RabbitMq", userName: username, password: password, port: 5672)
     .WithManagementPlugin(15672);
 
 builder.AddProject<Projects.TreasuryFlow_Api>("treasuryflow-api")
-    .WithReference(sql)
-    .WaitFor(sql)
+    .WithReference(treasuryFlowSql)
+    .WaitFor(treasuryFlowSql)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
 
 builder.AddProject<Projects.TreasuryFlow_Consumer>("treasuryflow-consumer")
-    .WithReference(sql)
-    .WaitFor(sql)
+    .WithReference(treasuryFlowSql)
+    .WaitFor(treasuryFlowSql)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
 

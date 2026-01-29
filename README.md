@@ -165,7 +165,12 @@ Explicação da arquitetura
 - `SQL Server`: armazenamento transacional das entidades do domínio (transações, saldos, usuários).
 - `RabbitMQ`: barramento de mensagens para comunicação assíncrona entre API e workers.
 
-As cores no diagrama destacam responsabilidades: API (amarelo claro) para fronteira HTTP, Consumer (azul) para processamento assíncrono, DB (verde) para persistência e Broker (vermelho) para mensageria.
+As cores no diagrama destacam responsabilidades:
+- API (azul claro) representa a fronteira HTTP do sistema.
+- Consumer (verde claro) é responsável pelo processamento assíncrono em background.
+- Infraestrutura de persistência (SQL Server, em rosa claro) armazena os dados transacionais e agregados.
+- Infraestrutura de mensageria (RabbitMQ, em rosa claro) viabiliza a comunicação assíncrona baseada em eventos.
+- AppHost / Aspire (amarelo claro) atua na orquestração e provisão dos recursos durante o ambiente de desenvolvimento.
 
 ## Busca do balance do dia
 

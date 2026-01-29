@@ -10,8 +10,7 @@ namespace TreasuryFlow.Api.UserBalances;
 [Authorize(Policy = "RequireUserId")]
 [Authorize(Policy = "ManageUserBalance")]
 [ApiController]
-//[ApiVersion("1.0")]
-[Route("api/[controller]")]
+[Route("api/me/balances")]
 public class UserBalancesController(
     IUserBalanceService userBalanceService,
     IValidator<GetUserBalanceByPeriodRequest> validator) : Controller

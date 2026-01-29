@@ -9,8 +9,7 @@ using Asp.Versioning;
 namespace TreasuryFlow.Api.Transactions;
 
 [Authorize(Policy = "RequireUserId")]
-//[ApiVersion("1.0")]
-[Route("api/[controller]")]
+[Route("api/me/transactions")]
 
 public class TransactionsController(ITransactionService service,
     IValidator<CreateTransactionRequest> validator) : ControllerBase
@@ -22,7 +21,7 @@ public class TransactionsController(ITransactionService service,
     /// <returns>Dados da transação criada.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(
-        CreateTransactionRequest request,
+        [FromBody] CreateTransactionRequest request,
         CancellationToken cancellationToken)
     {
         var userId = User.GetUserIdAsValidatedGuid();

@@ -9,7 +9,7 @@ using Asp.Versioning;
 namespace TreasuryFlow.Api.Transactions;
 
 [Authorize(Policy = "RequireUserId")]
-[ApiVersion("1.0")]
+//[ApiVersion("1.0")]
 [Route("api/[controller]")]
 
 public class TransactionsController(ITransactionService service,

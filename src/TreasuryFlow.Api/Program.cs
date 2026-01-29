@@ -25,9 +25,10 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.MapControllers();
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -20,43 +20,43 @@ public static class HostingExtensions
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
 
-        builder.Services.ConfigureEndpoints();
+        //builder.Services.ConfigureEndpoints();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        //builder.Services.AddSwaggerGen(options =>
-        //{
-        //    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-        //    {
-        //        Name = "Authorization",
-        //        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        //        Scheme = "bearer",
-        //        BearerFormat = "JWT",
-        //        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        //        Description = "Enter the JWT token in the format: Bearer {your_token}"
-        //    });
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                Description = "Enter the JWT token in the format: Bearer {your_token}"
+            });
 
-        //    options.SwaggerDoc("v1", new()
-        //    {
-        //        Title = "TreasuryFlow API",
-        //        Version = "v1"
-        //    });
+            //options.SwaggerDoc("v1", new()
+            //{
+            //    Title = "TreasuryFlow API",
+            //    Version = "v1"
+            //});
 
-        //    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-        //    {
-        //        {
-        //            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-        //            {
-        //                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-        //                {
-        //                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-        //                    Id = "Bearer"
-        //                }
-        //            },
-        //            Array.Empty<string>()
-        //        }
-        //    });
-        //});
+            options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+            {
+                {
+                    new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                        {
+                            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
 
         builder.Services.AddInfrastructureServices();
         builder.Services.AddServices();
@@ -136,49 +136,49 @@ public static class HostingExtensions
         return builder;
     }
 
-    private static IServiceCollection ConfigureEndpoints(this IServiceCollection services)
-    {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "CashFlow Api",
-                Description = "Service that manages Merchants Cash Flows",
-            });
+    //private static IServiceCollection ConfigureEndpoints(this IServiceCollection services)
+    //{
+    //    services.AddEndpointsApiExplorer();
+    //    services.AddSwaggerGen(options =>
+    //    {
+    //        options.SwaggerDoc("v1", new OpenApiInfo
+    //        {
+    //            Version = "v1",
+    //            Title = "CashFlow Api",
+    //            Description = "Service that manages Merchants Cash Flows",
+    //        });
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "Insira o token JWT desta maneira: Bearer {seu token}"
-            });
+    //        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    //        {
+    //            Name = "Authorization",
+    //            Type = SecuritySchemeType.ApiKey,
+    //            Scheme = "Bearer",
+    //            BearerFormat = "JWT",
+    //            In = ParameterLocation.Header,
+    //            Description = "Insira o token JWT desta maneira: Bearer {seu token}"
+    //        });
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-        });
+    //        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //            {
+    //                {
+    //                    new OpenApiSecurityScheme
+    //                    {
+    //                        Reference = new OpenApiReference
+    //                        {
+    //                            Type = ReferenceType.SecurityScheme,
+    //                            Id = "Bearer"
+    //                        }
+    //                    },
+    //                    Array.Empty<string>()
+    //                }
+    //            });
+    //    });
 
-        services.ConfigureHttpJsonOptions(options =>
-        {
-            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        });
+    //    services.ConfigureHttpJsonOptions(options =>
+    //    {
+    //        options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    //    });
 
-        return services;
-    }
+    //    return services;
+    //}
 }

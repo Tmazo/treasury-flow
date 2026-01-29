@@ -6,7 +6,7 @@ using TreasuryFlow.Application.Auth.Services.Interfaces;
 namespace TreasuryFlow.Api.Auth;
 
 [ApiController]
-[ApiVersion("1.0")]
+//[ApiVersion("1.0")]
 [Route("api/[controller]")]
 public class AuthController(
     IAuthService authService) : ControllerBase

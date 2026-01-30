@@ -11,7 +11,7 @@ O sistema foi desenhado para atender dois tipos de usuários, cada um com fluxos
 
 O administrador é responsável pela gestão e visualização dos dados consolidados do sistema. Seu fluxo principal consiste em:
 
-Criação de usuários no sistema.
+Criação do próprio registro no sistema.
 
 Autenticação para obtenção de um token JWT.
 
@@ -30,6 +30,7 @@ Autenticação para obtenção de um token JWT.
 Criação de transações de entrada e saída, que impactam diretamente o saldo do usuário.
 
 As transações criadas pelos funcionários são posteriormente processadas e utilizadas no cálculo dos saldos diários, que ficam disponíveis para consulta pelo administrador.
+
 ## Fluxo de negócio
 <img width="1742" height="511" alt="image" src="https://github.com/user-attachments/assets/96ee90d4-e766-4f38-a391-267843dc9b82" />
 

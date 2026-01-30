@@ -3,7 +3,37 @@
 Projeto exemplo para gerenciamento de transações e saldos de usuários.
 
 ## Visão geral
+O Treasury Flow é um projeto voltado para o gerenciamento de transações financeiras e consulta de saldos diários de usuários, seguindo uma arquitetura baseada em microserviços e separação clara de responsabilidades.
 
+O sistema foi desenhado para atender dois tipos de usuários, cada um com fluxos bem definidos:
+
+👤 Usuário Administrador (Admin / Proprietário)
+
+O administrador é responsável pela gestão e visualização dos dados consolidados do sistema. Seu fluxo principal consiste em:
+
+Criação de usuários no sistema.
+
+Autenticação para obtenção de um token JWT.
+
+Consulta agregada dos saldos diários, permitindo visualizar o resultado consolidado das transações realizadas pelos usuários.
+
+Esse fluxo tem como objetivo fornecer uma visão analítica e centralizada dos balances, sem a necessidade de interagir diretamente com as transações individuais.
+
+👤 Usuário Funcionário (Usuário padrão)
+
+O funcionário é o usuário operacional do sistema, responsável pela execução das transações financeiras. Seu fluxo é composto por:
+
+Criação do próprio registro no sistema.
+
+Autenticação para obtenção de um token JWT.
+
+Criação de transações de entrada e saída, que impactam diretamente o saldo do usuário.
+
+As transações criadas pelos funcionários são posteriormente processadas e utilizadas no cálculo dos saldos diários, que ficam disponíveis para consulta pelo administrador.
+## Fluxo de negócio
+<img width="1742" height="511" alt="image" src="https://github.com/user-attachments/assets/96ee90d4-e766-4f38-a391-267843dc9b82" />
+
+## Sistema
 Arquitetura baseada em microserviços/split de responsabilidades com os seguintes componentes principais:
 
 - `src/TreasuryFlow.Api` - API HTTP pública.
@@ -98,6 +128,7 @@ Itens já mapeados e outras sugestões para evolução:
 - Harden security: validação de input mais rigorosa, proteção contra rate-limiting e configuração de CORS rígida.
 - Adicionar pipelines CI/CD com GitHub Actions e verificação de análise estática (ex.: SonarQube).
  - Criar endpoint para alterar a permissão de um usuário para `Admin` (controle de roles/privileges).
+ - Atualmente, o primeiro usuário cadastrado no sistema é automaticamente definido como Administrador `Admin`. Essa abordagem foi adotada por simplicidade e para facilitar o setup inicial do projeto, evitando a necessidade de um fluxo adicional de configuração ou seed manual de dados. Em um cenário futuro, esse processo pode ser evoluído para uma abordagem mais robusta e flexível 
 
 ## Diagrama da arquitetura
 

@@ -17,7 +17,7 @@ public class AuthService(ITreasuryFlowDbContext context, IConfiguration configur
 {
 
     public async Task Register(RegisterInput input)
-    {        
+    {
         var user = new UserEntity
         {
             Name = input.Name,

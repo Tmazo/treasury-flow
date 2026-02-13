@@ -54,7 +54,6 @@ public class GenerateTokenTests : IClassFixture<TreasuryFlowDbContextFixture>
         await _context.SaveChangesAsync();
 
         var input = new LoginInput(
-            user.Name,
             user.Email,
             password
         );

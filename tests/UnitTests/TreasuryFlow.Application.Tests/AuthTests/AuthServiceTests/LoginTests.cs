@@ -52,7 +52,6 @@ public class LoginTests : IClassFixture<TreasuryFlowDbContextFixture>
         await _context.SaveChangesAsync();
 
         var input = new LoginInput(
-            user.Name,
             user.Email,
             password
         );
@@ -71,7 +70,6 @@ public class LoginTests : IClassFixture<TreasuryFlowDbContextFixture>
     {
         // Arrange
         var input = new LoginInput(
-            "Unknown",
             "notfound@treasuryflow.com",
             "123456"
         );
@@ -102,7 +100,6 @@ public class LoginTests : IClassFixture<TreasuryFlowDbContextFixture>
         await _context.SaveChangesAsync();
 
         var input = new LoginInput(
-            user.Name,
             user.Email,
             "wrong-password"
         );
